@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from services.book_service import list_book, get_book, create_book, update_book, delete_book
+from services.book_service import list_book, get_book_by_id, create_book, update_book, delete_book
 from sql.database import get_db
 
 book_router = APIRouter(prefix="/book", tags=["books"])
@@ -10,7 +10,7 @@ def list_all(db = Depends(get_db)):
 
 @book_router.get("/{book_id}",)
 def single_book(book_id: int,db = Depends(get_db)):
-    book = get_book(db, book_id)
+    book = get_book_by_id(db, book_id)
     if book:
         return book
     else:

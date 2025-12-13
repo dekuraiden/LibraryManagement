@@ -1,9 +1,12 @@
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Float
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
+
 from .database import Base
 
+
+
 class Book(Base):
-    __tablename__ = "books"
+    __tablename__ = "Book"
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, nullable=False)
@@ -12,18 +15,23 @@ class Book(Base):
     year = Column(Integer, nullable=False)
     available = Column(Boolean, default=True)
 
-    # One-directional relationship (NO back_populates)
-    anime = relationship("Anime")
+    #One book can have multiple animes :L Mapper
+    anime = relationship("Anime", back_populates="book", cascade="all, delete-orphan")
 
 
 class Anime(Base):
-    __tablename__ = "anime"
+    __tablename__ = "Anime"
 
     id = Column(Integer, primary_key=True, index=True)
-    book_id = Column(Integer, ForeignKey("books.id"), nullable=True)
-    production_house = Column(String, nullable=True)
-    episodes_no = Column(String, nullable=True)
+    title = Column(String, nullable=True)
+    author = Column(String, nullable=True)
     genre = Column(String, nullable=True)
-    year = Column(Integer, nullable=True)
-    imdb_rating = Column(Float, nullable=True)       # ratings are not boolean
-    based_on_manga = Column(Boolean, default=True)
+    studio = Column(String, nullable=True)
+    genre = Column(String, nullable=True)
+    episodes = Column(Integer, nullable=True)
+    ongoing = Column(Boolean, default=True)
+
+    book_id = Column(Integer, ForeignKey("Book.id", ondelete="CASCADE"), nullable= False)
+
+    #mapper to book
+    book = relationship("Book", back_populates="anime")

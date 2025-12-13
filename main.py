@@ -20,3 +20,7 @@ def home():
 # Register routes
 app.include_router(book_router)
 app.include_router(anime_router)
+
+
+
+
