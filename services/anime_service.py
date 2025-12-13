@@ -21,16 +21,17 @@ def update_anime(db: Session, anime_id: int, update: dict):
     if not anime:
         raise Exception("Anime not found")
     else:
-        if "imdb_rating" in update and update["imdb_rating"] is not None:
+        if update["imdb_rating"] is not None:
                 rating = update["imdb_rating"]
                 if rating < 5:
                         book.available = False
-
+                        return crud.update_book()
                 elif 5 <= rating <= 7:
                         book.available = True
-
+                        return crud.update_book()
                 elif rating > 7:
                         anime.episodes_no = anime.episodes_no*2
+
     return crud.update_anime(db, anime_id, update)
 
 
